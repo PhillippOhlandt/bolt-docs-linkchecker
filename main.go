@@ -31,7 +31,7 @@ func (e *Ext) RequestGet(ctx *gocrawl.URLContext, headRes *http.Response) bool {
         return true
     }
     
-    fmt.Printf("[%v] %s from %s\n", headRes.StatusCode, ctx.URL(), ctx.SourceURL())
+    fmt.Printf("\x1b[31;1m[%v]\x1b[0m %s from \x1b[31;1m%s\x1b[0m\n", headRes.StatusCode, ctx.URL(), ctx.SourceURL())
     return false
 }
 
@@ -45,8 +45,14 @@ func main() {
     opts.MaxVisits = 1000000
     opts.HeadBeforeGet = true
 
+    host := "https://docs.bolt.cm"
+    versions := []string{"2.2", "3.0"}
+
     c := gocrawl.NewCrawlerWithOptions(opts)
-    c.Run("https://docs.bolt.cm/2.2/")
-    c.Run("https://docs.bolt.cm/3.0/")
-    c.Run("https://docs.bolt.cm/3.1/")
+
+    for _, version := range versions {
+        url := fmt.Sprintf("%s/%s/", host, version)
+        fmt.Println("Crawling ", url)
+        c.Run(url)
+    } 
 }
