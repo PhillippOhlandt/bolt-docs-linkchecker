@@ -4,6 +4,8 @@ import (
     "fmt"
     "net/http"
     "time"
+    "os"
+    "strings"
 
     "github.com/PuerkitoBio/gocrawl"
     "github.com/PuerkitoBio/goquery"
@@ -47,6 +49,14 @@ func main() {
 
     host := "https://docs.bolt.cm"
     versions := []string{"2.2", "3.0"}
+
+    if len(os.Args) > 1 {
+        host = os.Args[1]
+    }
+
+    if len(os.Args) > 2 {
+        versions = strings.Split(os.Args[2], ",")
+    }
 
     c := gocrawl.NewCrawlerWithOptions(opts)
 
