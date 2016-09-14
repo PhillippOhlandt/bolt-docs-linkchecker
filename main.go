@@ -41,7 +41,7 @@ func main() {
     ext := &Ext{&gocrawl.DefaultExtender{}}
     // Set custom options
     opts := gocrawl.NewOptions(ext)
-    opts.CrawlDelay = 2 * time.Millisecond
+    opts.CrawlDelay = 1 * time.Millisecond
     opts.LogFlags = gocrawl.LogError
     opts.SameHostOnly = true
     opts.MaxVisits = 1000000
