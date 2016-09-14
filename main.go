@@ -22,10 +22,8 @@ func (e *Ext) Filter(ctx *gocrawl.URLContext, isVisited bool) bool {
     if isVisited {
         return false
     }
-    if ctx.URL().Host == "docs.bolt.cm"{
-        return true
-    }
-    return false
+
+    return true
 }
 
 func (e *Ext) RequestGet(ctx *gocrawl.URLContext, headRes *http.Response) bool {
@@ -43,7 +41,7 @@ func main() {
     opts := gocrawl.NewOptions(ext)
     opts.CrawlDelay = 2 * time.Millisecond
     opts.LogFlags = gocrawl.LogError
-    opts.SameHostOnly = false
+    opts.SameHostOnly = true
     opts.MaxVisits = 1000000
     opts.HeadBeforeGet = true
 
