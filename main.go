@@ -11,6 +11,11 @@ import (
     "github.com/PuerkitoBio/goquery"
 )
 
+var (
+    host = "https://docs.bolt.cm"
+    versions = []string{"2.2", "3.0"}
+)
+
 type Ext struct {
     *gocrawl.DefaultExtender
 }
@@ -46,9 +51,6 @@ func main() {
     opts.SameHostOnly = true
     opts.MaxVisits = 1000000
     opts.HeadBeforeGet = true
-
-    host := "https://docs.bolt.cm"
-    versions := []string{"2.2", "3.0"}
 
     if len(os.Args) > 1 {
         host = os.Args[1]
