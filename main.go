@@ -14,6 +14,7 @@ import (
 var (
     host = "https://docs.bolt.cm"
     versions = []string{"2.2", "3.0"}
+    currentCrawledVersion = "2.2"
 )
 
 type Ext struct {
@@ -37,8 +38,14 @@ func (e *Ext) RequestGet(ctx *gocrawl.URLContext, headRes *http.Response) bool {
     if headRes.StatusCode >= 200 && headRes.StatusCode < 300 {
         return true
     }
+
+    versionUrlPart := fmt.Sprintf("/%s/", currentCrawledVersion)
+    sourceUrl := fmt.Sprint(ctx.SourceURL())
+    // When request returns 4xx or 5xx response and the source URL contains our current crawled version, mark as error.
+    if strings.Contains(sourceUrl, versionUrlPart) {
+        fmt.Printf("\x1b[31;1m[%v]\x1b[0m %s from \x1b[31;1m%s\x1b[0m\n", headRes.StatusCode, ctx.URL(), ctx.SourceURL())
+    }
     
-    fmt.Printf("\x1b[31;1m[%v]\x1b[0m %s from \x1b[31;1m%s\x1b[0m\n", headRes.StatusCode, ctx.URL(), ctx.SourceURL())
     return false
 }
 
@@ -64,6 +71,7 @@ func main() {
 
     for _, version := range versions {
         url := fmt.Sprintf("%s/%s/", host, version)
+        currentCrawledVersion = version
         fmt.Println("Crawling ", url)
         c.Run(url)
     } 
